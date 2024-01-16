@@ -5,6 +5,6 @@ package anchora.engine.app;
 
 class MessageUtils {
     public static String getMessage() {
-        return "Hello      World!";
+        return "Hello owo World :3!";
     }
 }
