@@ -17,5 +17,7 @@ public class App {
         tokens = split(getMessage());
         String result = join(tokens);
         System.out.println(WordUtils.capitalize(result));
+        WindowUtils window = new WindowUtils();
+        window.run();
     }
 }
