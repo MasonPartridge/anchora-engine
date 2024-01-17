@@ -1,5 +1,6 @@
 package anchora.engine.app;
 
+import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
@@ -28,7 +29,10 @@ public class WindowUtils {
 
         // Terminate GLFW and release the error callback
         glfwTerminate();
-        glfwSetErrorCallback(null).free();
+        GLFWErrorCallback prevCallback = glfwSetErrorCallback(null);
+        if (prevCallback != null) {
+            prevCallback.free();
+        }
     }
 
     private void init() {
@@ -69,7 +73,7 @@ public class WindowUtils {
     private void loop() {
         // Set the clear color
         System.out.println("Setting clear color..." + window);
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearColor(1.0f, 100.0f, 100.0f, 0.0f);
 
         // Run the rendering loop until the user closes the window
         while (!glfwWindowShouldClose(window)) {
