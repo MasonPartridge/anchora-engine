@@ -73,10 +73,12 @@ public class WindowUtils {
     private void loop() {
         // Set the clear color
         System.out.println("Setting clear color..." + window);
-        glClearColor(1.0f, 100.0f, 100.0f, 0.0f);
+        glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
 
         // Run the rendering loop until the user closes the window
         while (!glfwWindowShouldClose(window)) {
+            // Clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT);
             // Poll for events and swap the buffers
             glfwSwapBuffers(window);
             glfwPollEvents();
