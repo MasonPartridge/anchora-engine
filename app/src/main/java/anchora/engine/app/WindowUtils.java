@@ -1,14 +1,15 @@
 package anchora.engine.app;
+
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.glfw.Callbacks.*;
 
-
 public class WindowUtils {
-    
+
     // Window Properties
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
@@ -16,7 +17,6 @@ public class WindowUtils {
 
     // GLFW window handle
     private long window;
-
 
     public void run() {
         init();
@@ -31,7 +31,6 @@ public class WindowUtils {
         glfwSetErrorCallback(null).free();
     }
 
-
     private void init() {
         // Initialize GLFW
         if (!glfwInit()) {
@@ -43,6 +42,7 @@ public class WindowUtils {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // The window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // The window will be resizable
 
+        System.out.println("Creating window...");
         // Create the window
         window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
         if (window == NULL) {
@@ -56,6 +56,9 @@ public class WindowUtils {
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
 
+        // Create capabilities for the current context
+        GL.createCapabilities();
+
         // // Enable v-sync (removed for aesthedics ;3)
         // glfwSwapInterval(1);
 
@@ -65,6 +68,7 @@ public class WindowUtils {
 
     private void loop() {
         // Set the clear color
+        System.out.println("Setting clear color..." + window);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         // Run the rendering loop until the user closes the window
