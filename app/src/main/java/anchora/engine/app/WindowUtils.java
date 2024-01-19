@@ -3,11 +3,14 @@ package anchora.engine.app;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL20;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.glfw.Callbacks.*;
+
+import static anchora.engine.app.ShaderUtils.*;
 
 public class WindowUtils {
 
