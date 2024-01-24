@@ -59,7 +59,7 @@ body
 - **_style_**: Changes to code formatting. The style of code, reformatting, etc.
 - **_refactor_**: Refactor to production code. Upgrading a package and changing code to meet the new demands.
 - **_test_**: All things that apply to unit testing. Creating tests, refactoring tests, etc. No changes to production code occur.
-- **_chore_**: Updating gradle or github files. This is developer-facing _only_.
+- **_chore_**: Updating gradle, adding error handling, or github files. This is developer-facing _only_.
 - **_workaround_**: Temporary fix until a more robust solution is found or until other factors are resolved.
 
 `scope`: Narrow the scope of the commit to a one or two word description in parentheses
