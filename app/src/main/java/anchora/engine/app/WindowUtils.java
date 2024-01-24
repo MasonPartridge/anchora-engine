@@ -104,13 +104,11 @@ public class WindowUtils {
                 0.0f, 0.0f, 1.0f, 1.0f // Blue color for the third vertex
         };
 
-        int colorVBO = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, colorVBO);
-
         GL20.glEnableVertexAttribArray(1); // Enable the second attribute. The first attribute (0) is the vertex
                                            // positions.
         GL20.glVertexAttribPointer(1, 4, GL11.GL_FLOAT, false, 0, 0); // Tell OpenGL that the color data is structured
                                                                       // as 4 floats per vertex.
+        // Define color data
         FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(colors.length);
         colorBuffer.put(colors);
         colorBuffer.flip();
@@ -120,12 +118,19 @@ public class WindowUtils {
         verticesBuffer.put(vertices);
         verticesBuffer.flip();
 
-        // Create a VAO and VBO, and define your vertex data
-        VAO = GL30.glGenVertexArrays();
-        VBO = GL15.glGenBuffers();
-        GL30.glBindVertexArray(VAO);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
+        // Generate Color VBO
+        int colorVBO = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, colorVBO);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorBuffer, GL15.GL_STATIC_DRAW);
+
+        // Generate Vertex VAO
+        int vertexVBO = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexVBO);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
+
+        // Generate VAO
+        VAO = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(VAO);
 
         // Specify the layout of the vertex data
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
@@ -150,10 +155,10 @@ public class WindowUtils {
             // Clear the framebuffer
             glClear(GL_COLOR_BUFFER_BIT);
 
-                // Use your shader program to draw the rectangle
-                GL20.glUseProgram(shaderProgram);
-                GL30.glBindVertexArray(VAO);
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+            // Use your shader program to draw the rectangle
+            GL20.glUseProgram(shaderProgram);
+            GL30.glBindVertexArray(VAO);
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
 
             // Poll for events and swap the buffers
             glfwSwapBuffers(window);
