@@ -30,14 +30,23 @@ public class WindowUtils {
     // GLFW window handle
     private long window;
 
-    // Shader program
-    private int shaderProgram;
+    // Shader Variables
+    private int vertexShader, fragmentShader, shaderProgram;
+
     private int VAO;
     private int VBO;
 
     public void run() {
+        // ======================================================
+        // LWJGL Initialization
+        // ======================================================
+
         init();
         loop();
+
+        // ======================================================
+        // LWJGL Cleanup and Exit
+        // ======================================================
 
         // Release resources when the window is closed
         glfwFreeCallbacks(window);
@@ -52,6 +61,10 @@ public class WindowUtils {
     }
 
     private void init() {
+        // ======================================================
+        // GLFW Window Setup
+        // ======================================================
+
         // Initialize GLFW
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
@@ -59,11 +72,11 @@ public class WindowUtils {
 
         // Configure GLFW
         glfwDefaultWindowHints();
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // The window will stay hidden after creation
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // The window will be resizable
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-        System.out.println("Creating window...");
         // Create the window
+        System.out.println("Creating window...");
         window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
@@ -71,7 +84,8 @@ public class WindowUtils {
 
         // Center the window on the screen
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window, (vidMode.width() - WIDTH) / 2, (vidMode.height() - HEIGHT) / 2);
+        glfwSetWindowPos(window,
+                (vidMode.width() - WIDTH) / 2, (vidMode.height() - HEIGHT) / 2);
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
@@ -82,9 +96,35 @@ public class WindowUtils {
         // // Enable v-sync (removed for aesthedics ;3)
         // glfwSwapInterval(1);
 
+        // ======================================================
+        // OpenGL Shader and Vertices Setup
+        // ======================================================
+
+        // Define vertices data
+        float[] vertices = {
+            // Positions            // Colors
+            -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex  1
+             0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
+             0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Top vertex          3
+        };
+
+        // ======================================================
+        // OpenGL Vertex Shader Setup
+        // ======================================================
+
+        // Vertex Shader Setup
+        vertexShader = loadShader(GL20.GL_VERTEX_SHADER,
+        "app/shaders/vertex.glsl");
+
+
+
+
+
+
+        // ======================================================
         // Load the shaders
-        int vertexShader = loadShader(GL20.GL_VERTEX_SHADER, "app/shaders/vertex.glsl");
-        int fragmentShader = loadShader(GL20.GL_FRAGMENT_SHADER, "app/shaders/fragment.glsl");
+        fragmentShader = loadShader(GL20.GL_FRAGMENT_SHADER,
+                "app/shaders/fragment.glsl");
 
         // Create a shader program and link your shaders to it
         shaderProgram = GL20.glCreateProgram();
@@ -92,36 +132,16 @@ public class WindowUtils {
         GL20.glAttachShader(shaderProgram, fragmentShader);
         GL20.glLinkProgram(shaderProgram);
 
-        float[] vertices = {
-                -0.5f, -0.5f, 0.0f, // Bottom left vertex
-                0.5f, -0.5f, 0.0f, // Bottom right vertex
-                0.0f, 0.5f, 0.0f // Top vertex
-        };
-
-        float[] colors = {
-                1.0f, 0.0f, 0.0f, 1.0f, // Red color for the first vertex
-                0.0f, 1.0f, 0.0f, 1.0f, // Green color for the second vertex
-                0.0f, 0.0f, 1.0f, 1.0f // Blue color for the third vertex
-        };
 
         GL20.glEnableVertexAttribArray(1); // Enable the second attribute. The first attribute (0) is the vertex
                                            // positions.
         GL20.glVertexAttribPointer(1, 4, GL11.GL_FLOAT, false, 0, 0); // Tell OpenGL that the color data is structured
                                                                       // as 4 floats per vertex.
-        // Define color data
-        FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(colors.length);
-        colorBuffer.put(colors);
-        colorBuffer.flip();
 
         // Define vertex data
         FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
         verticesBuffer.put(vertices);
         verticesBuffer.flip();
-
-        // Generate Color VBO
-        int colorVBO = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, colorVBO);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorBuffer, GL15.GL_STATIC_DRAW);
 
         // Generate Vertex VAO
         int vertexVBO = GL15.glGenBuffers();
