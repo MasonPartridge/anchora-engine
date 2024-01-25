@@ -114,7 +114,7 @@ public class WindowUtils {
 
         // Vertex Shader Setup
         vertexShader = loadShader(GL20.GL_VERTEX_SHADER,
-        "app/shaders/vertex.glsl");
+        "app/shaders/vertex.glsl", "vertex");
 
 
 
@@ -124,7 +124,7 @@ public class WindowUtils {
         // ======================================================
         // Load the shaders
         fragmentShader = loadShader(GL20.GL_FRAGMENT_SHADER,
-                "app/shaders/fragment.glsl");
+                "app/shaders/fragment.glsl", "fragment");
 
         // Create a shader program and link your shaders to it
         shaderProgram = GL20.glCreateProgram();
