@@ -101,7 +101,7 @@ public class WindowUtils {
         // ======================================================
 
         // Define vertices data
-        float[] vertices = {
+        float[] vertexArray = {
             // Positions            // Colors
             -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex  1
              0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
@@ -127,8 +127,8 @@ public class WindowUtils {
         // ======================================================
 
         // Generate VBO
-        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
-        verticesBuffer.put(vertices);
+        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertexArray.length);
+        verticesBuffer.put(vertexArray);
         verticesBuffer.flip();
 
         // Generate VAO
