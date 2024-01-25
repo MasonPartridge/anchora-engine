@@ -31,7 +31,7 @@ public class WindowUtils {
     private long window;
 
     // Shader Variables
-    private int vertexShader, fragmentShader, shaderProgram;
+    private int vertexShaderId, fragmentShaderId, shaderProgramId;
 
     private int VAO;
     private int VBO;
@@ -108,42 +108,30 @@ public class WindowUtils {
              0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Top vertex          3
         };
 
-        // ======================================================
-        // OpenGL Vertex Shader Setup
-        // ======================================================
-
         // Vertex Shader Setup
-        vertexShader = loadShader(GL20.GL_VERTEX_SHADER,
+        vertexShaderId = loadShader(GL20.GL_VERTEX_SHADER,
         "app/shaders/vertex.glsl", "vertex");
 
+        // Fragment Shader Setup
+        fragmentShaderId = loadShader(GL20.GL_FRAGMENT_SHADER,
+        "app/shaders/fragment.glsl", "fragment");
 
-
-
-
+        // Shader Program Setup
+        shaderProgramId = GL20.glCreateProgram();
+        GL20.glAttachShader(shaderProgramId, vertexShaderId);
+        GL20.glAttachShader(shaderProgramId, fragmentShaderId);
+        GL20.glLinkProgram(shaderProgramId);
 
         // ======================================================
-        // Load the shaders
-        fragmentShader = loadShader(GL20.GL_FRAGMENT_SHADER,
-                "app/shaders/fragment.glsl", "fragment");
+        // OpenGL VAO and VBO Setup
+        // ======================================================
 
-        // Create a shader program and link your shaders to it
-        shaderProgram = GL20.glCreateProgram();
-        GL20.glAttachShader(shaderProgram, vertexShader);
-        GL20.glAttachShader(shaderProgram, fragmentShader);
-        GL20.glLinkProgram(shaderProgram);
-
-
-        GL20.glEnableVertexAttribArray(1); // Enable the second attribute. The first attribute (0) is the vertex
-                                           // positions.
-        GL20.glVertexAttribPointer(1, 4, GL11.GL_FLOAT, false, 0, 0); // Tell OpenGL that the color data is structured
-                                                                      // as 4 floats per vertex.
-
-        // Define vertex data
+        // Generate VBO
         FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
         verticesBuffer.put(vertices);
         verticesBuffer.flip();
 
-        // Generate Vertex VAO
+        // Generate VAO
         int vertexVBO = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexVBO);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
@@ -157,7 +145,7 @@ public class WindowUtils {
         GL20.glEnableVertexAttribArray(0);
 
         // Use your shader program to draw the rectangle
-        GL20.glUseProgram(shaderProgram);
+        GL20.glUseProgram(shaderProgramId);
         GL30.glBindVertexArray(VAO);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
 
@@ -176,7 +164,7 @@ public class WindowUtils {
             glClear(GL_COLOR_BUFFER_BIT);
 
             // Use your shader program to draw the rectangle
-            GL20.glUseProgram(shaderProgram);
+            GL20.glUseProgram(shaderProgramId);
             GL30.glBindVertexArray(VAO);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
 
