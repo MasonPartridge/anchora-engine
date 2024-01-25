@@ -33,8 +33,10 @@ public class WindowUtils {
     // Shader Variables
     private int vertexShaderId, fragmentShaderId, shaderProgramId;
 
-    private int VAO;
-    private int VBO;
+    // VAO and VBO Variables
+    private int VAOId;
+    private int VBOId;
+    
 
     public void run() {
         // ======================================================
@@ -137,8 +139,8 @@ public class WindowUtils {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
         // Generate VAO
-        VAO = GL30.glGenVertexArrays();
-        GL30.glBindVertexArray(VAO);
+        VAOId = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(VAOId);
 
         // Specify the layout of the vertex data
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
@@ -146,7 +148,7 @@ public class WindowUtils {
 
         // Use your shader program to draw the rectangle
         GL20.glUseProgram(shaderProgramId);
-        GL30.glBindVertexArray(VAO);
+        GL30.glBindVertexArray(VAOId);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
 
         // Make the window visible
@@ -165,7 +167,7 @@ public class WindowUtils {
 
             // Use your shader program to draw the rectangle
             GL20.glUseProgram(shaderProgramId);
-            GL30.glBindVertexArray(VAO);
+            GL30.glBindVertexArray(VAOId);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
 
             // Poll for events and swap the buffers
