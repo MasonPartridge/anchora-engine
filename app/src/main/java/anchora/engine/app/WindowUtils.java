@@ -11,7 +11,10 @@ import org.lwjgl.opengl.GL30;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.lwjgl.BufferUtils;
 
@@ -36,6 +39,7 @@ public class WindowUtils {
     // VAO and VBO Variables
     private int VAOId;
     private int VBOId;
+
     
 
     public void run() {
@@ -110,13 +114,26 @@ public class WindowUtils {
              0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Top vertex          3
         };
 
+        // shader source code
+        String vertexShaderSource;
+        String fragmentShaderSource;
+
+        try {
+            vertexShaderSource = 
+                new String(Files.readAllBytes(Paths.get("app/shaders/vertex.glsl")));
+            fragmentShaderSource = 
+                new String(Files.readAllBytes(Paths.get("app/shaders/fragment.glsl")));
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading shader files", e);
+        }
+
         // Vertex Shader Setup
         vertexShaderId = loadShader(GL20.GL_VERTEX_SHADER,
-        "app/shaders/vertex.glsl", "vertex");
+        vertexShaderSource, "vertex");
 
         // Fragment Shader Setup
         fragmentShaderId = loadShader(GL20.GL_FRAGMENT_SHADER,
-        "app/shaders/fragment.glsl", "fragment");
+        fragmentShaderSource, "fragment");
 
         // Shader Program Setup
         shaderProgramId = GL20.glCreateProgram();
