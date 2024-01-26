@@ -4,7 +4,18 @@ import org.lwjgl.opengl.GL20;
 
 public class ShaderUtils {
 
-    
+    /**
+     * Loads and compiles a shader of the given type using the provided source code.
+     *
+     * @param type         The type of the shader to load. This should be either
+     *                     GL20.GL_VERTEX_SHADER or GL20.GL_FRAGMENT_SHADER.
+     * @param shaderSource A string containing the source code of the shader.
+     * @param shaderName   The name of the shader. This is used for error reporting.
+     * @return             The ID of the compiled shader.
+     * @throws IllegalArgumentException If the shader source or name is null, or if
+     *                                  the type is not a valid shader type.
+     * @throws RuntimeException         If the shader fails to compile.
+     */
     public static int loadShader(int type,
             String shaderSource, String shaderName) {
 
