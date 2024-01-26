@@ -214,6 +214,9 @@ public class WindowUtils {
             glClear(GL_COLOR_BUFFER_BIT);
 
             // Use your shader program to draw the rectangle
+            GL20.glUseProgram(shaderProgramId);
+            GL30.glBindVertexArray(VAOId);
+            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
 
             // Poll for events and swap the buffers
             glfwSwapBuffers(window);
