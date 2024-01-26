@@ -197,7 +197,7 @@ public class WindowUtils {
         // Use your shader program to draw the rectangle
         GL20.glUseProgram(shaderProgramId);
         GL30.glBindVertexArray(VAOId);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
 
         // Make the window visible
         glfwShowWindow(window);
@@ -216,7 +216,16 @@ public class WindowUtils {
             // Use your shader program to draw the rectangle
             GL20.glUseProgram(shaderProgramId);
             GL30.glBindVertexArray(VAOId);
+            
+            // Enable attribute pointers for index 0 and 1
+            GL20.glEnableVertexAttribArray(0);
+            GL20.glEnableVertexAttribArray(1);
+
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+
+            // Disable attribute pointers after drawing
+            GL20.glDisableVertexAttribArray(0);
+            GL20.glDisableVertexAttribArray(1);
 
             // Poll for events and swap the buffers
             glfwSwapBuffers(window);
