@@ -128,12 +128,12 @@ public class WindowUtils {
         // OpenGL VAO and VBO Setup
         // ======================================================
 
-        // Generate VBO
+        // Generate FloatBuffer
         FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertexArray.length);
         verticesBuffer.put(vertexArray);
         verticesBuffer.flip();
 
-        // Generate VAO
+        // Generate VBO
         int vertexVBO = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexVBO);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
