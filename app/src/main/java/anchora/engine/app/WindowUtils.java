@@ -174,7 +174,7 @@ public class WindowUtils {
         GL30.glBindVertexArray(VAOId);
 
         // ======================================================
-        // Specify the layout of the vertex data & Position Attributes
+        // Specify vertex attribute pointers
         // ======================================================
         
         // Attribute sizes
@@ -192,7 +192,7 @@ public class WindowUtils {
 
         // Specify the layout of the color data
         GL20.glVertexAttribPointer(1, colorSize, 
-            GL11.GL_FLOAT, false, vertexSizeBytes, positionSize);
+            GL11.GL_FLOAT, false, vertexSizeBytes, positionSize * Float.BYTES);
         checkGLError("glVertexAttribPointer color");
 
         GL20.glEnableVertexAttribArray(1);
