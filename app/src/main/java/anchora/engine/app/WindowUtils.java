@@ -158,7 +158,6 @@ public class WindowUtils {
         int colorSize = 4;
         int vertexSizeBytes = (positionSize + colorSize) * Float.BYTES;
 
-
         // Specify the layout of the position data
         GL20.glVertexAttribPointer(0, 
             positionSize, GL11.GL_FLOAT, false, 
