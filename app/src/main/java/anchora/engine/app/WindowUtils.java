@@ -142,9 +142,27 @@ public class WindowUtils {
         VAOId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(VAOId);
 
-        // Specify the layout of the vertex data
-        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+        // ======================================================
+        // Specify the layout of the vertex data & Position Attributes
+        // ======================================================
+        
+        // Attribute sizes
+        int positionSize = 3;
+        int colorSize = 4;
+        int vertexSizeBytes = (positionSize + colorSize) * Float.BYTES;
+
+
+        // Specify the layout of the position data
+        GL20.glVertexAttribPointer(0, 
+            positionSize, GL11.GL_FLOAT, false, 
+            vertexSizeBytes, 0);
         GL20.glEnableVertexAttribArray(0);
+
+        // Specify the layout of the color data
+        GL20.glVertexAttribPointer(1, 
+            colorSize, GL11.GL_FLOAT, false, 
+            vertexSizeBytes, positionSize);
+        GL20.glEnableVertexAttribArray(1);
 
         // Use your shader program to draw the rectangle
         GL20.glUseProgram(shaderProgramId);
