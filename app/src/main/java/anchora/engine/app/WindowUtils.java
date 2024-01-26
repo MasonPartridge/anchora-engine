@@ -124,6 +124,13 @@ public class WindowUtils {
         GL20.glAttachShader(shaderProgramId, fragmentShaderId);
         GL20.glLinkProgram(shaderProgramId);
 
+        // Check for shader program linking errors
+        int linkStatus = GL20.glGetProgrami(shaderProgramId, GL20.GL_LINK_STATUS);
+        if (linkStatus != GL11.GL_TRUE) {
+            String errorLog = GL20.glGetProgramInfoLog(shaderProgramId);
+            throw new RuntimeException("Shader program linking failed:\n" + errorLog);
+        }
+
         // ======================================================
         // OpenGL VAO and VBO Setup
         // ======================================================
