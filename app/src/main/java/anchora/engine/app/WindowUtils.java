@@ -114,7 +114,9 @@ public class WindowUtils {
              0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
              0.0f,  0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f  // Top vertex          3
         };
-
+        
+        checkVertexArray(vertexArray);
+        
         // shader source code
         String vertexShaderSource;
         String fragmentShaderSource;
@@ -212,9 +214,6 @@ public class WindowUtils {
             glClear(GL_COLOR_BUFFER_BIT);
 
             // Use your shader program to draw the rectangle
-            GL20.glUseProgram(shaderProgramId);
-            GL30.glBindVertexArray(VAOId);
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
 
             // Poll for events and swap the buffers
             glfwSwapBuffers(window);
@@ -222,4 +221,18 @@ public class WindowUtils {
         }
     }
 
+    private boolean isValidColor(float color) {
+        return color >= 0.0f && color <= 1.0f;
+    }
+    
+    private void checkVertexArray(float[] vertexArray) {
+        for (int i = 3; i < vertexArray.length; i += 7) {
+            for (int j = 0; j < 4; j++) {
+                float color = vertexArray[i + j];
+                if (!isValidColor(color)) {
+                    throw new IllegalArgumentException("Invalid color value: " + color);
+                }
+            }
+        }
+    }
 }
