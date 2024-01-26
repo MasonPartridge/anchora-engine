@@ -12,6 +12,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -118,15 +119,18 @@ public class WindowUtils {
         String vertexShaderSource;
         String fragmentShaderSource;
 
-        try {
-            vertexShaderSource = 
-                new String(Files.readAllBytes(Paths.get("app/shaders/vertex.glsl")));
-            fragmentShaderSource = 
-                new String(Files.readAllBytes(Paths.get("app/shaders/fragment.glsl")));
-        } catch (IOException e) {
-            System.err.println("IOException message: " + e.getMessage());
-            throw new RuntimeException("Error reading shader files", e);
-        }
+    try {
+        vertexShaderSource = new String(Files.readAllBytes(Paths.get(getClass()
+            .getClassLoader().getResource("shaders/vertex.glsl").toURI())));
+        fragmentShaderSource = new String(Files.readAllBytes(Paths.get(getClass()
+            .getClassLoader().getResource("shaders/fragment.glsl").toURI())));
+    } catch (IOException e) {
+        System.err.println("IOException message: " + e.getMessage());
+        throw new RuntimeException("Error reading shader files", e);
+    } catch (URISyntaxException e) {
+        System.err.println("URISyntaxException message: " + e.getMessage());
+        throw new RuntimeException("Error parsing shader file URI", e);
+    }
 
         // Vertex Shader Setup
         vertexShaderId = loadShader(GL20.GL_VERTEX_SHADER,
