@@ -183,21 +183,30 @@ public class WindowUtils {
         int vertexSizeBytes = (positionSize + colorSize) * Float.BYTES;
 
         // Specify the layout of the position data
-        GL20.glVertexAttribPointer(0, 
-            positionSize, GL11.GL_FLOAT, false, 
-            vertexSizeBytes, 0);
+        GL20.glVertexAttribPointer(0, positionSize, 
+            GL11.GL_FLOAT, false, vertexSizeBytes, 0);
+        checkGLError("glVertexAttribPointer position");
+
         GL20.glEnableVertexAttribArray(0);
+        checkGLError("glEnableVertexAttribArray position");
 
         // Specify the layout of the color data
-        GL20.glVertexAttribPointer(1, 
-            colorSize, GL11.GL_FLOAT, false, 
-            vertexSizeBytes, positionSize);
+        GL20.glVertexAttribPointer(1, colorSize, 
+            GL11.GL_FLOAT, false, vertexSizeBytes, positionSize);
+        checkGLError("glVertexAttribPointer color");
+
         GL20.glEnableVertexAttribArray(1);
+        checkGLError("glEnableVertexAttribArray color");
 
         // Use your shader program to draw the rectangle
         GL20.glUseProgram(shaderProgramId);
+        checkGLError("glUseProgram");
+
         GL30.glBindVertexArray(VAOId);
+        checkGLError("glBindVertexArray");
+
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+        checkGLError("glDrawArrays");
 
         // Make the window visible
         glfwShowWindow(window);
@@ -245,6 +254,21 @@ public class WindowUtils {
                     throw new IllegalArgumentException("Invalid color value: " + color);
                 }
             }
+        }
+    }
+
+    private void checkGLError(String glOperation) {
+        int error;
+        while ((error = GL11.glGetError()) != GL11.GL_NO_ERROR) {
+            String errorMessage;
+            switch (error) {
+                case GL11.GL_INVALID_ENUM: errorMessage = "Invalid enum"; break;
+                case GL11.GL_INVALID_VALUE: errorMessage = "Invalid value"; break;
+                case GL11.GL_INVALID_OPERATION: errorMessage = "Invalid operation"; break;
+                case GL11.GL_OUT_OF_MEMORY: errorMessage = "Out of memory"; break;
+                default: errorMessage = "Unknown error"; break;
+            }
+            System.err.println(glOperation + ": " + errorMessage);
         }
     }
 }
