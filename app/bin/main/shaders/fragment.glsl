@@ -7,6 +7,6 @@ void main() {
     if (length(vertexColor) > 0.0) { // If vertexColor is not black
         FragColor = vec4(vertexColor, 1.0); // Use vertexColor
     } else {
-        FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Otherwise, use white as default
+        FragColor = vec4(1.0, 1.0, 1.0, 1.0); // Use white as default
     }
 }

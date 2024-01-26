@@ -110,9 +110,9 @@ public class WindowUtils {
         // Define vertices data
         float[] vertexArray = {
             // Positions            // Colors
-            -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex  1
+            -0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom left vertex  1
              0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
-             0.0f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Top vertex          3
+             0.0f,  0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f  // Top vertex          3
         };
 
         // shader source code
