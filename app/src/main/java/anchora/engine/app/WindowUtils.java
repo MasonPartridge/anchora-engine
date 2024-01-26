@@ -124,6 +124,7 @@ public class WindowUtils {
             fragmentShaderSource = 
                 new String(Files.readAllBytes(Paths.get("app/shaders/fragment.glsl")));
         } catch (IOException e) {
+            System.err.println("IOException message: " + e.getMessage());
             throw new RuntimeException("Error reading shader files", e);
         }
 
