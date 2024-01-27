@@ -38,10 +38,7 @@ public class WindowUtils {
     private int vertexShaderId, fragmentShaderId, shaderProgramId;
 
     // VAO and VBO Variables
-    private int VAOId;
-    private int VBOId;
-
-    
+    private int VAOId, VBOId, EBOId;
 
     public void run() {
         // ======================================================
@@ -110,9 +107,15 @@ public class WindowUtils {
         // Define vertices data
         float[] vertexArray = {
             // Positions            // Colors
-            -0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom left vertex  1
-             0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
-             0.0f,  0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f  // Top vertex          3
+            -1.0f, -1.0f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex  1
+             1.0f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
+             1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Top right vertex    3
+            -1.0f,  1.0f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f  // Top left vertex     4
+        };
+
+        float[]elementArray = {
+            0, 1, 2,
+            2, 3, 0
         };
         
         checkVertexArray(vertexArray);
@@ -156,7 +159,7 @@ public class WindowUtils {
         }
 
         // ======================================================
-        // OpenGL VAO and VBO Setup
+        // OpenGL VAO, EBO and VBO Setup
         // ======================================================
 
         // Generate FloatBuffer
