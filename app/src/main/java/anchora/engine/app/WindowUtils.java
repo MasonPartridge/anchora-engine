@@ -1,14 +1,29 @@
 package anchora.engine.app;
 
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-
-import static org.lwjgl.glfw.GLFW.*;
+import static anchora.engine.app.ShaderUtils.loadShader;
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
+import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
+import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
+import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
+import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
+import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
+import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
+import static org.lwjgl.glfw.GLFW.glfwShowWindow;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
+import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.IOException;
@@ -18,11 +33,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.lwjgl.BufferUtils;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.glfw.Callbacks.*;
-
-import static anchora.engine.app.ShaderUtils.*;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 public class WindowUtils {
 
@@ -104,16 +121,15 @@ public class WindowUtils {
         // OpenGL Shader and Vertices Setup
         // ======================================================
 
-        // Define vertices data
         float[] vertexArray = {
-                // Positions // Colors
-                -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex 1
-                1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
-                1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top right vertex 3
-                -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f // Top left vertex 4
+            // Positions          // Colors
+            -1.0f,  -1.0f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex 1
+             1.0f,  -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
+             1.0f,   1.0f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f, // Top right vertex 3
+            -1.0f,   1.0f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f  // Top left vertex 4
         };
 
-        float[] elementArray = {
+        int[] elementArray = {
                 0, 1, 2,
                 2, 3, 0
         };
@@ -167,9 +183,6 @@ public class WindowUtils {
         verticesBuffer.put(vertexArray);
         verticesBuffer.flip();
 
-        // Generate Element FloatBuffer
-        FloatBuffer elementBuffer = BufferUtils.createFloatBuffer(elementArray.length);
-
         // Generate Vertex Buffer Object (VBO)
         int vertexVBO = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexVBO);
@@ -182,7 +195,7 @@ public class WindowUtils {
         // Element Buffer Object (EBO) Setup
         int EBOId = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBOId);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, elementArray, GL15.GL_STATIC_DRAW);
 
         // ======================================================
         // Specify vertex attribute pointers
@@ -241,7 +254,8 @@ public class WindowUtils {
             GL20.glEnableVertexAttribArray(0);
             GL20.glEnableVertexAttribArray(1);
 
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+            GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
+            checkGLError("glDrawElements");
 
             // Disable attribute pointers after drawing
             GL20.glDisableVertexAttribArray(0);
