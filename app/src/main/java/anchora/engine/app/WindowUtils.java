@@ -109,7 +109,7 @@ public class WindowUtils {
             // Positions            // Colors
             -1.0f, -1.0f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex  1
              1.0f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
-             1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f  // Top right vertex    3
+             1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f,  // Top right vertex    3
             -1.0f,  1.0f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f  // Top left vertex     4
         };
 
@@ -258,6 +258,7 @@ public class WindowUtils {
     }
     
     private void checkVertexArray(float[] vertexArray) {
+        System.out.println("Checking vertex array... Length: " + vertexArray.length);
         for (int i = 3; i < vertexArray.length; i += 7) {
             for (int j = 0; j < 4; j++) {
                 float color = vertexArray[i + j];
