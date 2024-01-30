@@ -106,44 +106,44 @@ public class WindowUtils {
 
         // Define vertices data
         float[] vertexArray = {
-            // Positions            // Colors
-            -1.0f, -1.0f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex  1
-             1.0f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
-             1.0f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f,  // Top right vertex    3
-            -1.0f,  1.0f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f  // Top left vertex     4
+                // Positions // Colors
+                -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Bottom left vertex 1
+                1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // Bottom right vertex 2
+                1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // Top right vertex 3
+                -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f // Top left vertex 4
         };
 
-        float[]elementArray = {
-            0, 1, 2,
-            2, 3, 0
+        float[] elementArray = {
+                0, 1, 2,
+                2, 3, 0
         };
-        
+
         checkVertexArray(vertexArray);
-        
+
         // shader source code
         String vertexShaderSource;
         String fragmentShaderSource;
 
-    try {
-        vertexShaderSource = new String(Files.readAllBytes(Paths.get(getClass()
-            .getClassLoader().getResource("shaders/vertex.glsl").toURI())));
-        fragmentShaderSource = new String(Files.readAllBytes(Paths.get(getClass()
-            .getClassLoader().getResource("shaders/fragment.glsl").toURI())));
-    } catch (IOException e) {
-        System.err.println("IOException message: " + e.getMessage());
-        throw new RuntimeException("Error reading shader files", e);
-    } catch (URISyntaxException e) {
-        System.err.println("URISyntaxException message: " + e.getMessage());
-        throw new RuntimeException("Error parsing shader file URI", e);
-    }
+        try {
+            vertexShaderSource = new String(Files.readAllBytes(Paths.get(getClass()
+                    .getClassLoader().getResource("shaders/vertex.glsl").toURI())));
+            fragmentShaderSource = new String(Files.readAllBytes(Paths.get(getClass()
+                    .getClassLoader().getResource("shaders/fragment.glsl").toURI())));
+        } catch (IOException e) {
+            System.err.println("IOException message: " + e.getMessage());
+            throw new RuntimeException("Error reading shader files", e);
+        } catch (URISyntaxException e) {
+            System.err.println("URISyntaxException message: " + e.getMessage());
+            throw new RuntimeException("Error parsing shader file URI", e);
+        }
 
         // Vertex Shader Setup
         vertexShaderId = loadShader(GL20.GL_VERTEX_SHADER,
-        vertexShaderSource, "vertex");
+                vertexShaderSource, "vertex");
 
         // Fragment Shader Setup
         fragmentShaderId = loadShader(GL20.GL_FRAGMENT_SHADER,
-        fragmentShaderSource, "fragment");
+                fragmentShaderSource, "fragment");
 
         // Shader Program Setup
         shaderProgramId = GL20.glCreateProgram();
@@ -187,23 +187,23 @@ public class WindowUtils {
         // ======================================================
         // Specify vertex attribute pointers
         // ======================================================
-        
+
         // Attribute sizes
         int positionSize = 3;
         int colorSize = 4;
         int vertexSizeBytes = (positionSize + colorSize) * Float.BYTES;
 
         // Specify the layout of the position data
-        GL20.glVertexAttribPointer(0, positionSize, 
-            GL11.GL_FLOAT, false, vertexSizeBytes, 0);
+        GL20.glVertexAttribPointer(0, positionSize,
+                GL11.GL_FLOAT, false, vertexSizeBytes, 0);
         checkGLError("glVertexAttribPointer position");
 
         GL20.glEnableVertexAttribArray(0);
         checkGLError("glEnableVertexAttribArray position");
 
         // Specify the layout of the color data
-        GL20.glVertexAttribPointer(1, colorSize, 
-            GL11.GL_FLOAT, false, vertexSizeBytes, positionSize * Float.BYTES);
+        GL20.glVertexAttribPointer(1, colorSize,
+                GL11.GL_FLOAT, false, vertexSizeBytes, positionSize * Float.BYTES);
         checkGLError("glVertexAttribPointer color");
 
         GL20.glEnableVertexAttribArray(1);
@@ -236,7 +236,7 @@ public class WindowUtils {
             // Use your shader program to draw the rectangle
             GL20.glUseProgram(shaderProgramId);
             GL30.glBindVertexArray(VAOId);
-            
+
             // Enable attribute pointers for index 0 and 1
             GL20.glEnableVertexAttribArray(0);
             GL20.glEnableVertexAttribArray(1);
@@ -256,8 +256,11 @@ public class WindowUtils {
     private boolean isValidColor(float color) {
         return color >= 0.0f && color <= 1.0f;
     }
-    
+
     private void checkVertexArray(float[] vertexArray) {
+        if (vertexArray == null || vertexArray.length == 0 || vertexArray.length % 7 != 0) {
+            throw new IllegalArgumentException("Vertex array is null, empty, or has an invalid length.");
+        }
         System.out.println("Checking vertex array... Length: " + vertexArray.length);
         for (int i = 3; i < vertexArray.length; i += 7) {
             for (int j = 0; j < 4; j++) {
@@ -274,11 +277,21 @@ public class WindowUtils {
         while ((error = GL11.glGetError()) != GL11.GL_NO_ERROR) {
             String errorMessage;
             switch (error) {
-                case GL11.GL_INVALID_ENUM: errorMessage = "Invalid enum"; break;
-                case GL11.GL_INVALID_VALUE: errorMessage = "Invalid value"; break;
-                case GL11.GL_INVALID_OPERATION: errorMessage = "Invalid operation"; break;
-                case GL11.GL_OUT_OF_MEMORY: errorMessage = "Out of memory"; break;
-                default: errorMessage = "Unknown error"; break;
+                case GL11.GL_INVALID_ENUM:
+                    errorMessage = "Invalid enum";
+                    break;
+                case GL11.GL_INVALID_VALUE:
+                    errorMessage = "Invalid value";
+                    break;
+                case GL11.GL_INVALID_OPERATION:
+                    errorMessage = "Invalid operation";
+                    break;
+                case GL11.GL_OUT_OF_MEMORY:
+                    errorMessage = "Out of memory";
+                    break;
+                default:
+                    errorMessage = "Unknown error";
+                    break;
             }
             System.err.println(glOperation + ": " + errorMessage);
         }
