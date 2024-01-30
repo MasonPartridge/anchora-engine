@@ -162,19 +162,27 @@ public class WindowUtils {
         // OpenGL VAO, EBO and VBO Setup
         // ======================================================
 
-        // Generate FloatBuffer
+        // Generate Vertices FloatBuffer
         FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertexArray.length);
         verticesBuffer.put(vertexArray);
         verticesBuffer.flip();
 
-        // Generate VBO
+        // Generate Element FloatBuffer
+        FloatBuffer elementBuffer = BufferUtils.createFloatBuffer(elementArray.length);
+
+        // Generate Vertex Buffer Object (VBO)
         int vertexVBO = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexVBO);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
 
-        // Generate VAO
+        // Generate Vertex Array Object VAO
         VAOId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(VAOId);
+
+        // Element Buffer Object (EBO) Setup
+        int EBOId = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBOId);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL15.GL_STATIC_DRAW);
 
         // ======================================================
         // Specify vertex attribute pointers
@@ -208,8 +216,8 @@ public class WindowUtils {
         GL30.glBindVertexArray(VAOId);
         checkGLError("glBindVertexArray");
 
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
-        checkGLError("glDrawArrays");
+        GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
+        checkGLError("glDrawElements");
 
         // Make the window visible
         glfwShowWindow(window);
