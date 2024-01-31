@@ -2,6 +2,8 @@ package anchora.engine.app;
 
 public class VerticesUtils {
 
+    private final static int SINGLE_VERTEX_ARRAY_LENGTH = 7;
+
     public static float[] generateHexagon(
             float sideLength, float centerX, float centerY, int singleVertexArrayLength) {
 
@@ -17,17 +19,31 @@ public class VerticesUtils {
         return verticies;
     }
 
-    public static float[] generateLine(int x1, int y1, int x2, int y2, float lineWidth, int singleVertexArrayLength) {
-        float[] vertices = new float[4 * singleVertexArrayLength];
-        generateVerticies(x2, y2, lineWidth, vertices, singleVertexArrayLength)
+    /**
+     * Generates a line with the specified coordinates, line width and color.
+     * @param x1 
+     * @param y1
+     * @param x2
+     * @param y2
+     * @param lineWidth 
+     * @param color an array of floats with RGBA values.
+     * @return
+     */
+    public static float[] generateLine(int x1, int y1, int x2, int y2, float lineWidth, float[] color) {
+
+        if (color.length != 4) {
+            throw new IllegalArgumentException("VerticesUtils: Invalid color input.");
+        }
+
+        float[] vertices = generateVerticies(color, 4);
         vertices[0] = x1;
         vertices[1] = y1 + lineWidth;
-        vertices[0 + singleVertexArrayLength] = y1 - lineWidth;
-        vertices[1 + singleVertexArrayLength] = x1;
-        vertices[0 + singleVertexArrayLength * 2] = y2 + lineWidth;
-        vertices[1 + singleVertexArrayLength * 2] = x2;
-        vertices[0 + singleVertexArrayLength * 3] = y2 - lineWidth;
-        vertices[1 + singleVertexArrayLength * 3] = x2;
+        vertices[0 + SINGLE_VERTEX_ARRAY_LENGTH] = y1 - lineWidth;
+        vertices[1 + SINGLE_VERTEX_ARRAY_LENGTH] = x1;
+        vertices[0 + SINGLE_VERTEX_ARRAY_LENGTH * 2] = y2 + lineWidth;
+        vertices[1 + SINGLE_VERTEX_ARRAY_LENGTH * 2] = x2;
+        vertices[0 + SINGLE_VERTEX_ARRAY_LENGTH * 3] = y2 - lineWidth;
+        vertices[1 + SINGLE_VERTEX_ARRAY_LENGTH * 3] = x2;
         return vertices;
 
     }
@@ -81,8 +97,9 @@ public class VerticesUtils {
     /**
      * Generates a vertex with the specified coordinates and color.
      *
-     * @param color The color of the vertices, represented as an array of floats with
-     *              RGBA values.
+     * @param color           The color of the vertices, represented as an array of
+     *                        floats with
+     *                        RGBA values.
      * @param verticiesAmount The amount of verticies to generate.
      * @return The generated vertex as an array of floats.
      */
