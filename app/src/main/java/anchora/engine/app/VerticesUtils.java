@@ -66,7 +66,8 @@ public class VerticesUtils {
         return vertices;
     }
 
-    public static float[] generatePolygon(int centerX, int centerY, int radius, int sides, int singleVertexArrayLength) {
+    public static float[] generatePolygon(int centerX, int centerY, int radius, int sides,
+            int singleVertexArrayLength) {
         float[] vertices = new float[sides * singleVertexArrayLength];
         for (int i = 0; i < sides; i++) {
             double angle = 2 * Math.PI / sides * i;
@@ -75,5 +76,26 @@ public class VerticesUtils {
         }
         return vertices;
     }
-    
+
+    /**
+     * Generates a vertex with the specified coordinates and color.
+     *
+     * @param x                     The x-coordinate of the vertex.
+     * @param y                     The y-coordinate of the vertex.
+     * @param z                     The z-coordinate of the vertex.
+     * @param color                 The color of the vertex, represented as an array of floats with RGBA values.
+     * @return                      The generated vertex as an array of floats.
+     */
+    public static float[] generateVertex(float x, float y, float z, float[] color,
+            int singleVertexArrayLength) {
+        float[] vertices = new float[singleVertexArrayLength];
+        vertices[0] = x;
+        vertices[1] = y;
+        vertices[2] = z;
+        vertices[3] = color[0];
+        vertices[4] = color[1];
+        vertices[5] = color[2];
+        vertices[6] = color[3];
+        return vertices;
+    }
 }
