@@ -29,9 +29,9 @@ public class VerticesUtils {
         vertices[1 + singleVertexArrayLength * 3] = x2;
         return vertices;
 
-     }
+    }
 
-     public static float[] generateRectangle(int x, int y, int width, int height, int singleVertexArrayLength) {
+    public static float[] generateRectangle(int x, int y, int width, int height, int singleVertexArrayLength) {
         float[] vertices = new float[4 * singleVertexArrayLength];
         vertices[0] = x;
         vertices[1] = y;
@@ -42,16 +42,17 @@ public class VerticesUtils {
         vertices[0 + singleVertexArrayLength * 3] = x + width;
         vertices[1 + singleVertexArrayLength * 3] = y;
         return vertices;
-     }
+    }
 
-        public static float[] generateTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int singleVertexArrayLength) {
-            float[] vertices = new float[3 * singleVertexArrayLength];
-            vertices[0] = x1;
-            vertices[1] = y1;
-            vertices[0 + singleVertexArrayLength] = x2;
-            vertices[1 + singleVertexArrayLength] = y2;
-            vertices[0 + singleVertexArrayLength * 2] = x3;
-            vertices[1 + singleVertexArrayLength * 2] = y3;
-            return vertices;
-        }
+    public static float[] generateTriangle(int x1, int y1, int x2, int y2, int x3, int y3,
+            int singleVertexArrayLength) {
+        float[] vertices = new float[3 * singleVertexArrayLength];
+        vertices[0] = x1;
+        vertices[1] = y1;
+        vertices[0 + singleVertexArrayLength] = x2;
+        vertices[1 + singleVertexArrayLength] = y2;
+        vertices[0 + singleVertexArrayLength * 2] = x3;
+        vertices[1 + singleVertexArrayLength * 2] = y3;
+        return vertices;
+    }
 }
