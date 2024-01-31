@@ -86,16 +86,27 @@ public class VerticesUtils {
      * @param color                 The color of the vertex, represented as an array of floats with RGBA values.
      * @return                      The generated vertex as an array of floats.
      */
-    public static float[] generateVertex(float x, float y, float z, float[] color,
-            int singleVertexArrayLength) {
-        float[] vertices = new float[singleVertexArrayLength];
-        vertices[0] = x;
-        vertices[1] = y;
-        vertices[2] = z;
-        vertices[3] = color[0];
-        vertices[4] = color[1];
-        vertices[5] = color[2];
-        vertices[6] = color[3];
+    public static float[] generateVerticies(float x, float y, float z, float[] color, int verticiesAmount) {
+
+        if (color.length != 4) {
+            throw new IllegalArgumentException("VerticesUtils: Invalid color input.");
+        } else if (verticiesAmount < 1) {
+            throw new IllegalArgumentException("VerticesUtils: Invalid verticies amount.");
+        } 
+
+        int singleVertexArrayLength = 7;
+        float[] vertices = new float[singleVertexArrayLength * verticiesAmount];
+
+        for (int i = 0; i < verticiesAmount; i++) {
+            vertices[i * singleVertexArrayLength] = x;
+            vertices[i * singleVertexArrayLength + 1] = y;
+            vertices[i * singleVertexArrayLength + 2] = z;
+            vertices[i * singleVertexArrayLength + 3] = color[0];
+            vertices[i * singleVertexArrayLength + 4] = color[1];
+            vertices[i * singleVertexArrayLength + 5] = color[2];
+            vertices[i * singleVertexArrayLength + 6] = color[3];
+        }
+        
         return vertices;
     }
 }
