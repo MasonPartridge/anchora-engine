@@ -55,4 +55,25 @@ public class VerticesUtils {
         vertices[1 + singleVertexArrayLength * 2] = y3;
         return vertices;
     }
+
+    public static float[] generateCircle(int centerX, int centerY, int radius, int singleVertexArrayLength) {
+        float[] vertices = new float[360 * singleVertexArrayLength];
+        for (int i = 0; i < 360; i++) {
+            double angle = 2 * Math.PI / 360 * i;
+            vertices[i * singleVertexArrayLength] = (int) (centerX + radius * Math.cos(angle));
+            vertices[i * singleVertexArrayLength + 1] = (int) (centerY + radius * Math.sin(angle));
+        }
+        return vertices;
+    }
+
+    public static float[] generatePolygon(int centerX, int centerY, int radius, int sides, int singleVertexArrayLength) {
+        float[] vertices = new float[sides * singleVertexArrayLength];
+        for (int i = 0; i < sides; i++) {
+            double angle = 2 * Math.PI / sides * i;
+            vertices[i * singleVertexArrayLength] = (int) (centerX + radius * Math.cos(angle));
+            vertices[i * singleVertexArrayLength + 1] = (int) (centerY + radius * Math.sin(angle));
+        }
+        return vertices;
+    }
+    
 }
