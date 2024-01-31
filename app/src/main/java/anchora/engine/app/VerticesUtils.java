@@ -19,6 +19,7 @@ public class VerticesUtils {
 
     public static float[] generateLine(int x1, int y1, int x2, int y2, float lineWidth, int singleVertexArrayLength) {
         float[] vertices = new float[4 * singleVertexArrayLength];
+        generateVerticies(x2, y2, lineWidth, vertices, singleVertexArrayLength)
         vertices[0] = x1;
         vertices[1] = y1 + lineWidth;
         vertices[0 + singleVertexArrayLength] = y1 - lineWidth;
@@ -80,20 +81,22 @@ public class VerticesUtils {
     /**
      * Generates a vertex with the specified coordinates and color.
      *
-     * @param x                     The x-coordinate of the vertex.
-     * @param y                     The y-coordinate of the vertex.
-     * @param z                     The z-coordinate of the vertex.
-     * @param color                 The color of the vertex, represented as an array of floats with RGBA values.
-     * @return                      The generated vertex as an array of floats.
+     * @param color The color of the vertices, represented as an array of floats with
+     *              RGBA values.
+     * @param verticiesAmount The amount of verticies to generate.
+     * @return The generated vertex as an array of floats.
      */
-    public static float[] generateVerticies(float x, float y, float z, float[] color, int verticiesAmount) {
+    public static float[] generateVerticies(float[] color, int verticiesAmount) {
 
         if (color.length != 4) {
             throw new IllegalArgumentException("VerticesUtils: Invalid color input.");
         } else if (verticiesAmount < 1) {
             throw new IllegalArgumentException("VerticesUtils: Invalid verticies amount.");
-        } 
+        }
 
+        float x = 0;
+        float y = 0;
+        float z = 0;
         int singleVertexArrayLength = 7;
         float[] vertices = new float[singleVertexArrayLength * verticiesAmount];
 
@@ -106,7 +109,7 @@ public class VerticesUtils {
             vertices[i * singleVertexArrayLength + 5] = color[2];
             vertices[i * singleVertexArrayLength + 6] = color[3];
         }
-        
+
         return vertices;
     }
 }
